@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>带音乐与背景的电子信件</title>
+    <style>
+        body {
+            max-width: 850px;
+            margin: 60px auto;
+            padding: 0 20px;
+            font-family: "楷体", "微软雅黑", sans-serif;
+        }
+        /* 1. 信件区域：添加背景图+半透明遮罩（确保文字清晰） */
+        .letter-box {
+            border: 2px solid #d8c3a5;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            /* 背景图：替换url中的路径为你的图片地址 */
+            background-image: url("你的信件背景图路径.jpg");
+            background-size: cover; /* 背景图铺满容器 */
+            background-position: center; /* 背景图居中 */
+            position: relative;
+        }
+        /* 背景半透明遮罩：避免文字与背景混淆 */
+        .letter-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85); /* 白色半透明 */
+            border-radius: 10px; /* 与信件容器圆角一致 */
+            z-index: -1; /* 遮罩在文字下方 */
+        }
+        .letter-box h2 {
+            color: #5a3e2b;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .letter-box p {
+            color: #2d2418;
+            font-size: 18px;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        /* 2. 音乐区域：自定义播放按钮图案 */
+        .music-box {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f4e9;
+            border-radius: 12px;
+        }
+        .music-box p {
+            color: #5a3e2b;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        /* 自定义音频控件样式（隐藏默认按钮，用自定义图案） */
+        .custom-audio {
+            width: 100%;
+            /* 隐藏默认控件，仅保留核心功能 */
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        /* 自定义播放按钮图标（用文字/图标模拟，也可替换为图片） */
+        .audio-btn {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background-color: #5a3e2b;
+            border-radius: 50%;
+            line-height: 60px;
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+        /* 播放/暂停图标切换（通过JS控制） */
+        .audio-btn.pause::after {
+            content: "❚❚"; /* 暂停图标 */
+        }
+        .audio-btn.play::after {
+            content: "▶"; /* 播放图标 */
+        }
+        /* 自定义进度条 */
+        .audio-progress {
+            width: 60%;
+            height: 8px;
+            background-color: #e0d6c7;
+            border-radius: 4px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. 电子信件内容（带背景图） -->
+    <div class="letter-box">
+        <h2>致远方的你</h2>
+        <p>见字如面：</p >
+        <p>此刻你听到的旋律，是我去年在巷口咖啡馆偶然记下的片段。那时窗外正飘着细雨，和现在我写这封信的天气很像。</p >
+        <p>你曾说喜欢旧物的温度，所以我选了一张泛黄的信纸图案做背景，希望它能让这些文字多一点烟火气。最近是否有去探索新的书店，或是发现了好吃的小馆？</p >
+        <p>若你有空，不妨伴着音乐，给我回封信吧。哪怕只是聊聊最近的云，或是路上遇到的一只猫。</p >
+        <p>顺颂时祺。</p >
+        <p>你的朋友：XXX<br>2024年X月X日</p >
+    </div>
+
+    <!-- 2. 自定义音乐播放区域 -->
+    <div class="music-box">
+        <p>信件配乐：《时光碎片》</p >
+        <!-- 自定义播放按钮+音频核心 -->
+        <div>
+            <div class="audio-btn play" id="playBtn"></div>
+            <div class="audio-progress"></div>
+            <!-- 隐藏的原生音频控件（提供播放核心功能） -->
+            <audio id="letterMusic" loop>
+                <source src="你的音乐文件路径.mp3" type="audio/mpeg">
+                <source src="你的音乐文件路径.ogg" type="audio/ogg">
+                浏览器不支持音频播放，请更新浏览器。
+            </audio>
+        </div>
+    </div>
+
+    <!-- 3. JS控制播放/暂停切换 -->
+    <script>
+        const playBtn = document.getElementById("playBtn");
+        const letterMusic = document.getElementById("letterMusic");
+
+        // 点击自定义按钮切换播放/暂停
+        playBtn.addEventListener("click", function() {
+            if (letterMusic.paused) {
+                letterMusic.play();
+                playBtn.classList.remove("play");
+                playBtn.classList.add("pause");
+            } else {
+                letterMusic.pause();
+                playBtn.classList.remove("pause");
+                playBtn.classList.add("play");
+            }
+        });
+    </script>
+</body>
+</html>
